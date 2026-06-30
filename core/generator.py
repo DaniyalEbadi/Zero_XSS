@@ -1,13 +1,18 @@
-from core.config import xsschecker, badTags, fillings, eFillings, lFillings, jFillings, eventHandlers, tags, functions
+from core.config import xsschecker, badTags, fillings, eFillings, lFillings, jFillings, eventHandlers, tags, functions, polyglot_payloads
 from core.jsContexter import jsContexter
 from core.utils import randomUpper as r, genGen, extractScripts
 
 
-def generator(occurences, response):
+def generator(occurences, response, include_polyglot=False):
     scripts = extractScripts(response)
     index = 0
     vectors = {11: set(), 10: set(), 9: set(), 8: set(), 7: set(),
                6: set(), 5: set(), 4: set(), 3: set(), 2: set(), 1: set()}
+
+    if include_polyglot:
+        for poly in polyglot_payloads:
+            vectors[5].add(poly)
+
     for i in occurences:
         context = occurences[i]['context']
         if context == 'html':

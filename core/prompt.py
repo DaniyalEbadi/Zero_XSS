@@ -1,34 +1,34 @@
+import sys
 import os
 import tempfile
 
-from core.config import defaultEditor
-from core.colors import white, yellow
-from core.log import setup_logger
-
-logger = setup_logger(__name__)
-
 
 def prompt(default=None):
-    # try assigning default editor, if fails, use default
-    editor = os.environ.get('EDITOR', defaultEditor)
-    # create a temporary file and open it
-    with tempfile.NamedTemporaryFile(mode='r+') as tmpfile:
-        if default:  # if prompt should have some predefined text
-            tmpfile.write(default)
-            tmpfile.flush()
-        child_pid = os.fork()
-        is_child = child_pid == 0
-        if is_child:
-            # opens the file in the editor
-            try:
-                os.execvp(editor, [editor, tmpfile.name])
-            except FileNotFoundError:
-                logger.error('You don\'t have either a default $EDITOR \
-value defined nor \'nano\' text editor')
-                logger.info('Execute %s`export EDITOR=/pat/to/your/editor` \
-%sthen run XSStrike again.\n\n' % (yellow,white))
-                exit(1)
+    if sys.platform == 'win32':
+        import subprocess
+        editor = os.environ.get('EDITOR', 'notepad.exe')
+        with tempfile.NamedTemporaryFile(mode='w+', suffix='.txt', delete=False) as f:
+            if default:
+                f.write(default)
+            tmpname = f.name
+        subprocess.call([editor, tmpname])
+        with open(tmpname, 'r') as f:
+            result = f.read()
+        os.unlink(tmpname)
+        return result
+    else:
+        editor = os.environ.get('EDITOR', 'nano')
+        with tempfile.NamedTemporaryFile(mode='w+', suffix='.txt', delete=False) as f:
+            if default:
+                f.write(default)
+            tmpname = f.name
+        pid = os.fork()
+        if pid == 0:
+            os.execvp(editor, [editor, tmpname])
         else:
-            os.waitpid(child_pid, 0)  # wait till the editor gets closed
-            tmpfile.seek(0)
-            return tmpfile.read().strip()  # read the file
+            import subprocess as _sp
+            _sp.call([editor, tmpname])
+        with open(tmpname, 'r') as f:
+            result = f.read()
+        os.unlink(tmpname)
+        return result

@@ -328,5 +328,50 @@
 		"code" : "",
 		"page" : "<img class=.yunsuologo.",
 		"headers" : "yunsuo_session"
+	},
+	"Google Cloud Armor (Google)" : {
+		"code" : "403",
+		"page" : "Your client has issued a malformed or illegal request|blocked by Google Cloud Armor",
+		"headers" : ""
+	},
+	"Fastly Next-Gen WAF (Fastly)" : {
+		"code" : "",
+		"page" : "Fastly error: unknown domain|Security-denied request blocked",
+		"headers" : "X-Security"
+	},
+	"Azure Web Application Firewall (Microsoft)" : {
+		"code" : "403",
+		"page" : "Request blocked by Azure Web Application Firewall|Microsoft-Azure-Application-Gateway",
+		"headers" : ""
+	},
+	"Reblaze Web Application Firewall (Reblaze)" : {
+		"code" : "403",
+		"page" : "blocked by Reblaze|Reblaze Security",
+		"headers" : "server: Reblaze"
+	},
+	"Signal Sciences / Fastly (Signal Sciences)" : {
+		"code" : "403",
+		"page" : "Request blocked by Signal Sciences|sigSci|sigsci",
+		"headers" : "X-SigSci"
+	},
+	"PerimeterX (PerimeterX)" : {
+		"code" : "",
+		"page" : "PerimeterX Blocked|botdetector|px-block",
+		"headers" : "X-PX"
+	},
+	"Datadome (Datadome)" : {
+		"code" : "",
+		"page" : "Protected by DataDome|datadome",
+		"headers" : "X-DataDome"
+	},
+	"Human Security (Human)" : {
+		"code" : "",
+		"page" : "Human Challenge|fingerprint|Human Security",
+		"headers" : ""
+	},
+	"open-appsec (open-appsec)" : {
+		"code" : "",
+		"page" : "appsec|open-appsec|blocked by appsec",
+		"headers" : "X-appsec"
 	}
 }

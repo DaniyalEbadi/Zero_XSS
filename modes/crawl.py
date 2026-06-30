@@ -45,7 +45,8 @@ def crawl(scheme, host, main_url, form, blindXSS, blindPayload, headers, delay, 
                             positions = occurences.keys()
                             occurences = filterChecker(
                                 url, paramsCopy, headers, GET, delay, occurences, timeout, encoding)
-                            vectors = generator(occurences, response.text)
+                            include_polyglot = core.config.globalVariables.get('polyglot', False)
+                            vectors = generator(occurences, response.text, include_polyglot)
                             if vectors:
                                 for confidence, vects in vectors.items():
                                     try:
